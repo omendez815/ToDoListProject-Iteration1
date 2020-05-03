@@ -57,6 +57,10 @@ class ToDoTableViewController: UITableViewController {
         }
         return cell
     }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let todo = toDos[indexPath.row]
+        performSegue(withIdentifier: "moveToComplete", sender: todo)
+    }
     
 
     /*
@@ -94,14 +98,20 @@ class ToDoTableViewController: UITableViewController {
     }
     */
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
+        if let addVC = segue.destination as? AddToDoViewController{
+            addVC.previousVC = self
+        }
+        if let completeVC = segue.destination as? CompleteToDoViewController{
+            if let todo = sender as? ToDo{
+                completeVC.selectedToDo = todo
+                completeVC.previousVC = self
+            }
+        }
         // Pass the selected object to the new view controller.
     }
-    */
+    
 
 }
